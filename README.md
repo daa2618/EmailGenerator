@@ -35,17 +35,23 @@ print(email_address)  # Output: [jdoe@example.com]
 ```
 
 ## Features
-Supports various name representations: first name, last name, initials, and first/last few letters.
-Handles separators between name parts in the email format.
-Provides flexibility in specifying the desired level of detail for each name part.
+1. Supports various name representations: first name, last name, initials, and first/last few letters.
+2. Handles separators between name parts in the email format.
+3. Provides flexibility in specifying the desired level of detail for each name part.
 ## Error Handling
 The script handles potential errors such as:
 
-Names that cannot be split into first, middle, and last names.
-Missing middle names when the format specifies a middle name placeholder.
-Malformed email format strings.
+1. Names that cannot be split into first, middle, and last names.
+2. Missing middle names when the format specifies a middle name placeholder.
+3. Malformed email format strings.
 ## Dependencies
-This script does not require any external libraries.
+This script soley relies on python re library.
+
+If not installed, install the library using
+```python
+!pip install re
+```
+
 
 ## Contributing
 I welcome contributions to this project. Feel free to submit pull requests with improvements or additional features.
