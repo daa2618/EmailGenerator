@@ -26,8 +26,13 @@ def _splitName(name:str)->tuple:
     except:
         try:
             first, middle, last = split
-        except Exception as e:
-            print(f"{len(split)=}\n{e}")
+        except:
+            try:
+                if len(split) == 1:
+                    first = split[0]
+            
+            except Exception as e:
+                print(f"{len(split)=}\n{e}")
 
     return first, middle, last
 
@@ -55,11 +60,6 @@ def _getFormatListAndSeperator(emailFormat):
            It might not handle all possible edge cases or malformed input strings.
     """
     formatList, separator = re.findall("\\[(.*?)\\]", emailFormat), re.findall("\\](.*?)\\[", emailFormat)
-    if separator:
-        separator = separator[0]
-    else:
-        separator = ""
-
     return formatList, separator
 
 def _getSequencingWords(formatList):
@@ -180,12 +180,15 @@ def generateEmailString(name:str, emailFormat:str, domain:str) -> (str|None):
         ```
     
     """
-    formatList, separator = _getFormatListAndSeperator(emailFormat)
+    if not domain.startswith("@"):
+        domain = f"@{domain.lower()}"
+        
+    formatList, separators = _getFormatListAndSeperator(emailFormat)
     
     words = _getSequencingWords(formatList)
     
     first, middle, last = _splitName(name)
-
+    
     
         
     if (first and last) or middle:
@@ -205,21 +208,23 @@ def generateEmailString(name:str, emailFormat:str, domain:str) -> (str|None):
                             middle = middle[:wordOptions.get(word)]
                         else:
                             raise NameError("Middle name does not exist")
-
-        #print(words)
-        #print(formatList)
         
         pattern=re.compile("_"+"|_".join(words))
         
         newEmailFormat = pattern.sub("", emailFormat)
-        #print(newEmailFormat)
+        
         newFormatList = re.findall("\\[(.*?)\\]", newEmailFormat)
-        #print(first, middle, last)
         if not middle and "middle" in formatList:
             raise NameError("Middle name does not exist")
-        try:
-            string = separator.join([eval(x).lower() for x in newFormatList if eval(x)])
         
+        try:
+            nameFragments = [eval(x).lower() for x in newFormatList if eval(x)]
+        
+            for a in range(len(nameFragments)):
+                if a < len(separators):
+                    nameFragments.insert(2*a+1, separators[a])
+    
+            string = "".join(nameFragments)
             return f"{string}{domain}"
         except Exception as e:
             print(f"Error: {e}\nResults not found for: \n\t{words=}\n\t{formatList=}\n\t{newEmailFormat=}")
