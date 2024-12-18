@@ -1,6 +1,11 @@
 # EmailGenerator
 Generates an email address based on person's name, a specified email format and the domain
 
+Install the repo using
+```python
+!pip install git+https://github.com/daa2618/EmailGenerator.git
+```
+
 # Python Script for Generating Email Addresses
 
 This Python script generates email addresses based on a specified format and a person's name. It offers flexibility in how names are represented (initials or first few letters) and handles separators between name parts.
